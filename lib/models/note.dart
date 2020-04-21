@@ -4,17 +4,23 @@ class Note {
   String noteContent;
   DateTime createDateTime;
   DateTime latestEditDateTime;
-  
-  Note({this.noteID,this.noteContent, this.noteTitle, this.createDateTime, this.latestEditDateTime});
-  factory Note.fromJson(Map<String,dynamic> item){
+
+  Note(
+      {this.noteID,
+      this.noteTitle,
+      this.noteContent,
+      this.createDateTime,
+      this.latestEditDateTime});
+
+  factory Note.fromJson(Map<String, dynamic> item) {
     return Note(
-          noteID: item['noteID'],
-          noteContent: item['noteContent'],
-          noteTitle: item['noteTitle'],
-          createDateTime: DateTime.parse(item['createDateTime']),
-          latestEditDateTime: item['latestEditDateTime'] != null
-              ? DateTime.parse(item['latestEditDateTime'])
-              : null,
-        );
+      noteID: item['noteID'],
+      noteTitle: item['noteTitle'],
+      noteContent: item['noteContent'],
+      createDateTime: DateTime.parse(item['createDateTime']),
+      latestEditDateTime: item['latestEditDateTime'] != null
+          ? DateTime.parse(item['latestEditDateTime'])
+          : null,
+    );
   }
 }

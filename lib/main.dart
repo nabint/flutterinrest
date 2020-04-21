@@ -4,7 +4,7 @@ import 'package:flutterinrest/views/note_list.dart';
 import 'package:get_it/get_it.dart';
 
 void setupLocator(){
-  GetIt.I.registerLazySingleton(()=>NoteService());
+  GetIt.I.registerLazySingleton(()=>NotesService());
 }
 
 void main() {
