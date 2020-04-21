@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterinrest/models/note.dart';
+import 'package:flutterinrest/models/noteinsert.dart';
 import 'package:flutterinrest/services/note_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,7 +34,7 @@ class _NoteModifyState extends State<NoteModify> {
           _isLoading = false;
         });
 
-        if (response.error)  {
+        if (response.error) {
           errorMessage = response.errorMessage ?? 'An error occurred';
         }
         note = response.data;
@@ -70,8 +71,46 @@ class _NoteModifyState extends State<NoteModify> {
                       child:
                           Text('Submit', style: TextStyle(color: Colors.white)),
                       color: Theme.of(context).primaryColor,
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                      onPressed: () async {
+                        if (isEditing) {
+                          //update Note
+                        } else {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          final note = NoteInsert(
+                              noteContent: _titleController.text,
+                              noteTitle: _contentController.text);
+                          final result = await noteService.createNote(note);
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          final title = 'Done';
+                          final text = result.error
+                              ? (result.errorMessage ?? 'An error has occured')
+                              : 'Your Note was created';
+                          showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                title: Text(title),
+                                content: Text(text),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Ok"),
+                                  ),
+                                ],
+                              );
+                            },
+                          ).then((data) {
+                            if (result.data) {
+                              Navigator.of(context).pop();
+                            }
+                          });
+                        }
                       },
                     ),
                   )
